@@ -40,6 +40,13 @@ def hello_world():
     return "<p>Olá, Mundo!</p>"
 
 
+@app.route("/listadeusuarios", methods=["GET"])
+def listadeusuarios():
+    all_usuarios = Usuario.query.all()
+    results = usuarios_schema.dump(all_usuarios)
+    return jsonify(results)
+
+
 @app.route("/usuarioadd", methods=["POST"])
 def usuarioadd():
     nome = request.json["nome"]
