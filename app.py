@@ -1,20 +1,17 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import datetime
-
-# run api flask --app hello run
-# no lugar do hello colocar o nome do arquivo
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 
-# Configura o banco de dados SQLite em relação à pasta de instância do aplicativo.
-# Substitua "root" pelo nome de usuário real e "flask_react_crud" pelo nome real do banco de dados.
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = "mysql+pymysql://root@localhost/flask_react_crud"
-
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
+ma = Marshmallow(app)
 
 
 class Usuario(db.Model):
@@ -27,6 +24,15 @@ class Usuario(db.Model):
     def __init__(self, nome, email):
         self.nome = nome
         self.email = email
+
+
+class UsuarioSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "nome", "email", "data")
+
+
+usuario_schema = UsuarioSchema()
+usuarios_schema = UsuarioSchema(many=True)
 
 
 @app.route("/")
@@ -43,7 +49,7 @@ def usuarioadd():
     db.session.add(usuario)
     db.session.commit()
 
-    return jsonify({"sucesso": "Postagem realizada com sucesso"})
+    return usuario_schema.jsonify(usuario)
 
 
 if __name__ == "__main__":
