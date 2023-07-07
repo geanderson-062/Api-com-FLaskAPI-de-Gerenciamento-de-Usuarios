@@ -47,6 +47,12 @@ def listadeusuarios():
     return jsonify(results)
 
 
+@app.route("/detalhedousuario/<id>", methods=["GET"])
+def detalhedousuario(id):
+    usuario = Usuario.query.get(id)
+    return usuario_schema.jsonify(usuario)
+
+
 @app.route("/usuarioadd", methods=["POST"])
 def usuarioadd():
     nome = request.json["nome"]
