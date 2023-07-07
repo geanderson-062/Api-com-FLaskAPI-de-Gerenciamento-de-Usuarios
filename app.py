@@ -67,6 +67,14 @@ def atualizarusuario(id):
     return usuario_schema.jsonify(usuario)
 
 
+@app.route("/deletarusuario/<id>", methods=["DELETE"])
+def deletarusuario(id):
+    usuario = Usuario.query.get(id)
+    db.session.delete(usuario)
+    db.session.commit()
+    return usuario_schema.jsonify(usuario)
+
+
 @app.route("/usuarioadd", methods=["POST"])
 def usuarioadd():
     nome = request.json["nome"]
