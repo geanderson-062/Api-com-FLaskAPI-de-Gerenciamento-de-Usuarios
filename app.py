@@ -53,6 +53,20 @@ def detalhedousuario(id):
     return usuario_schema.jsonify(usuario)
 
 
+@app.route("/atualizarusuario/<id>", methods=["PUT"])
+def atualizarusuario(id):
+    usuario = Usuario.query.get(id)
+
+    nome = request.json["nome"]
+    email = request.json["email"]
+
+    usuario.nome = nome
+    usuario.email = email
+
+    db.session.commit()
+    return usuario_schema.jsonify(usuario)
+
+
 @app.route("/usuarioadd", methods=["POST"])
 def usuarioadd():
     nome = request.json["nome"]
