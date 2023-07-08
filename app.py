@@ -2,10 +2,15 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_marshmallow import Marshmallow
+from flask_cors import CORS
 
 # para roda a api colocar no cmd flask --app app run
 
+# Criando uma instância da aplicação Flask
 app = Flask(__name__)
+
+# Habilitando o CORS para permitir solicitações de outros domínios
+CORS(app)
 
 # Configuração do banco de dados
 app.config[
